@@ -76,7 +76,7 @@ def train(total_timesteps: int = 1_000_000, resume: bool = False):
         n_epochs   = 4,
 
         # ── Learning ──────────────────────────────────────────────────────────
-        learning_rate  = 2.5e-4,
+        learning_rate  = 5e-4,
         clip_range     = 0.1,
         max_grad_norm  = 0.5,
         vf_coef        = 0.5,
