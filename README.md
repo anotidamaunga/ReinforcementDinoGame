@@ -29,7 +29,6 @@ ReinforcementDinoGame/
 ├── train.py              # PPO training loop with checkpointing and evaluation
 ├── play.py               # Watch a trained model play
 ├── models/               # Saved checkpoints and best model
-└── logs/                 # TensorBoard training logs
 ```
 
 ---
