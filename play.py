@@ -68,7 +68,7 @@ def play(model_path: str, n_episodes: int = 10):
 
     vec_env.close()
 
-    print(f"\n📊 Results over {n_episodes} episodes:")
+    print(f"Results over {n_episodes} episodes:")
     print(f"   Mean reward : {sum(scores)/len(scores):.1f}")
     print(f"   Best reward : {max(scores):.1f}")
     print(f"   Worst reward: {min(scores):.1f}")
