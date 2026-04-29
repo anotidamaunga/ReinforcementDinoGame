@@ -150,8 +150,4 @@ PPO Critic head →  Value estimate
 
 ---
 
-## References
 
-- Mnih et al. (2015) — [Human-level control through deep reinforcement learning](https://doi.org/10.1038/nature14236)
-- [Stable Baselines3 documentation](https://stable-baselines3.readthedocs.io)
-- [Gymnasium documentation](https://gymnasium.farama.org)
