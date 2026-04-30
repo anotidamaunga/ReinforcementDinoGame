@@ -13,10 +13,10 @@ import os
 import time
 
 from stable_baselines3 import PPO
-from stable_baselines3.common.vec_env import DummyVecEnv, VecTransposeImage
+from stable_baselines3.common.vec_env import DummyVecEnv, VecTransposeImage, VecFrameStack
 from stable_baselines3.common.monitor import Monitor
 
-from Dino_environment import DinoEnv
+from Dino_environment import DinoEnv, open_dino_game
 
 DEFAULT_MODEL = "./models/best_model.zip"
 
@@ -38,12 +38,12 @@ def play(model_path: str, n_episodes: int = 10):
 
     print(f" Loading model: {model_path}")
     print(f"   Episodes to run: {n_episodes}")
-    print("  Make sure Chrome is open with chrome://dino visible on screen!")
-    print("   Starting in 3 seconds…\n")
-    time.sleep(3)
+    print("  Opening Chrome → chrome://dino …")
+    open_dino_game(wait=3.0)
 
     vec_env = DummyVecEnv([make_env()])
     vec_env = VecTransposeImage(vec_env)
+    vec_env = VecFrameStack(vec_env, n_stack=4)
 
     model = PPO.load(model_path, env=vec_env)
 
@@ -55,9 +55,7 @@ def play(model_path: str, n_episodes: int = 10):
         total_reward = 0.0
         steps = 0
 
-        while not done:
-            # deterministic=True means the agent always picks the best action
-            # (no exploration noise during evaluation)
+        while not done[0]:
             action, _ = model.predict(obs, deterministic=True)
             obs, reward, done, info = vec_env.step(action)
             total_reward += float(reward[0])
