@@ -68,25 +68,18 @@ def train(total_timesteps: int = 1_000_000, resume: bool = False):
         env           = env,
         policy_kwargs = policy_kwargs,
 
-        # ── Rollout ───────────────────────────────────────────────────────────
-        # Larger n_steps gives the agent more experience per update — important
-        # when each episode is short (dino dies fast early on).
+
         n_steps    = 2048,
         batch_size = 64,
         n_epochs   = 4,
 
-        # ── Learning ──────────────────────────────────────────────────────────
-        learning_rate  = 2.5e-4,
+        learning_rate  =  5e-4,
         clip_range     = 0.1,
         max_grad_norm  = 0.5,
         vf_coef        = 0.5,
         gamma          = 0.99,
         gae_lambda     = 0.95,
 
-        # ── Exploration ───────────────────────────────────────────────────────
-        # Higher entropy coefficient stops the agent collapsing to "do nothing"
-        # early in training. 0.05 forces it to keep trying jumps/ducks until
-        # it discovers they avoid death. Reduce toward 0.01 once it's learning.
         ent_coef = 0.05,
 
         tensorboard_log = LOGS_DIR,
