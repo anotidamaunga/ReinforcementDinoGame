@@ -1,6 +1,4 @@
 """
-BEFORE RUNNING
---------------
   1. Run `python Dino_environment.py` to open Chrome and launch the Dino game.
   2. Then run `python train.py` to start training.
 """
@@ -11,6 +9,7 @@ import numpy as np
 import gymnasium as gym
 from gymnasium import spaces
 import mss
+import cv2
 import pynput.keyboard as kb
 import pynput.mouse as mouse_lib
 
@@ -18,7 +17,7 @@ import pynput.mouse as mouse_lib
 
 GAME_REGION = {"top": 145, "left": 150, "width": 900, "height": 160}
 
-# Absolute screen coords used to click Chrome into focus before key presses.
+
 FOCUS_CLICK_XY = (
     GAME_REGION["left"] + GAME_REGION["width"]  // 2,
     GAME_REGION["top"]  + GAME_REGION["height"] // 2,
@@ -34,7 +33,7 @@ JUMP_HOLD  = 0.08
 
 ACTIONS = {0: "nothing", 1: "jump", 2: "duck"}
 
-# Path to Chrome executable — update if your installation differs
+# Path to Chrome executable. redirect to yours
 CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 
