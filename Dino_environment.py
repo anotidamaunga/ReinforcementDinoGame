@@ -1,25 +1,21 @@
 """
 BEFORE RUNNING
 --------------
-  1. Open Chrome -> chrome://dino (or disconnect internet).
-  2. Run `python Dino_environment.py` to check calibration.
+  1. Run `python Dino_environment.py` to open Chrome and launch the Dino game.
+  2. Then run `python train.py` to start training.
 """
 
 import time
+import subprocess
 import numpy as np
 import gymnasium as gym
 from gymnasium import spaces
-import cv2
 import mss
 import pynput.keyboard as kb
 import pynput.mouse as mouse_lib
 
 
-# ── Screen capture region ─────────────────────────────────────────────────────
-# Starts just LEFT of the dino and extends FAR to the right so the agent
-# can see incoming obstacles with enough time to react.
-# The dino sits at roughly x=170 on screen; we start at x=150 to keep it
-# in the left ~15% of the frame, leaving the rest as lookahead runway.
+
 GAME_REGION = {"top": 145, "left": 150, "width": 900, "height": 160}
 
 # Absolute screen coords used to click Chrome into focus before key presses.
@@ -28,17 +24,24 @@ FOCUS_CLICK_XY = (
     GAME_REGION["top"]  + GAME_REGION["height"] // 2,
 )
 
-# ── Game-over detection ───────────────────────────────────────────────────────
 GAME_OVER_PIXEL_XY        = (450, 25)
-GAME_OVER_PIXEL_THRESHOLD = 100          # brightness BELOW this → game over
+GAME_OVER_PIXEL_THRESHOLD = 100
 
-# ── Frame / action constants ──────────────────────────────────────────────────
 FRAME_W    = 84
 FRAME_H    = 84
 FRAME_SKIP = 4
 JUMP_HOLD  = 0.08
 
 ACTIONS = {0: "nothing", 1: "jump", 2: "duck"}
+
+# Path to Chrome executable — update if your installation differs
+CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+
+def open_dino_game(wait: float = 2.0):
+    """Open Chrome to chrome://dino and wait for it to load."""
+    subprocess.Popen([CHROME_PATH, "--new-window", "chrome://dino"])
+    time.sleep(wait)
 
 
 class DinoEnv(gym.Env):
@@ -135,21 +138,6 @@ class DinoEnv(gym.Env):
 
 
 if __name__ == "__main__":
-    print("Calibration mode — make sure Chrome/Dino is visible.")
-    print(f"Capture region  : {GAME_REGION}")
-    print(f"Game-over pixel : {GAME_OVER_PIXEL_XY}  (brightness < {GAME_OVER_PIXEL_THRESHOLD} = game over)\n")
-
-    with mss.mss() as sct:
-        for i in range(5):
-            img        = np.array(sct.grab(GAME_REGION))
-            x, y       = GAME_OVER_PIXEL_XY
-            b, g, r, _ = img[y, x]
-            status     = "GAME OVER" if g < GAME_OVER_PIXEL_THRESHOLD else "playing"
-            print(f"[{i+1}/5] Pixel {GAME_OVER_PIXEL_XY}: B={b} G={g} R={r}  → {status}")
-            if i == 0:
-                cv2.imwrite("calibration_screenshot.png",
-                            cv2.cvtColor(img, cv2.COLOR_BGRA2BGR))
-                print("  → Saved calibration_screenshot.png\n")
-            time.sleep(1)
-
-    print("If status reads wrong, adjust GAME_OVER_PIXEL_XY or GAME_OVER_PIXEL_THRESHOLD.")
+    print("Opening Chrome → chrome://dino …")
+    open_dino_game(wait=2.0)
+    print("Chrome is ready. Run train.py to start training.")
