@@ -172,6 +172,6 @@ The paper uses DQN, but PPO was chosen here because it is more stable to tune an
 
 ## References
 
-- Mnih et al. (2015) — *Human-level control through deep reinforcement learning*. https://arxiv.org/abs/1312.5602
+- Mnih et al. (2015) — Human-level control through deep reinforcement learning. https://www.nature.com/articles/nature14236
 - [Stable Baselines3](https://stable-baselines3.readthedocs.io/)
 - [Gymnasium](https://gymnasium.farama.org/)
